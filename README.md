@@ -13,7 +13,7 @@ A full-stack support ticket analyzer using local NLP/heuristics — no external 
 docker-compose up --build
 
 # App: http://localhost:3000
-# API: http://localhost:5000
+# API: http://localhost:4000
 ```
 
 > Requires Docker & Docker Compose installed.
@@ -44,7 +44,7 @@ cd frontend
 npm install
 
 # For local dev against the backend:
-# Edit src/utils/api.js or set REACT_APP_API_URL=http://localhost:5000/tickets
+# Edit src/utils/api.js or set REACT_APP_API_URL=http://localhost:4000/tickets
 
 npm start          # http://localhost:3000
 npm run build      # production build
