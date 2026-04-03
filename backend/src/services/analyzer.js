@@ -1,40 +1,23 @@
 "use strict";
 
-const {
-  CATEGORIES,
-  URGENCY_SIGNALS,
-  SECURITY_SIGNALS,
-  REFUND_SIGNALS,
-  PRIORITY_LEVELS
+const {CATEGORIES, URGENCY_SIGNALS,SECURITY_SIGNALS, REFUND_SIGNALS,PRIORITY_LEVELS
 } = require("../config/keywords");
 
-/**
- * TicketAnalyzer
- * Pure-function NLP heuristics — no external API calls.
- * All logic is unit-testable and deterministic.
- */
+
 class TicketAnalyzer {
-  /**
-   * Normalize text: lowercase + collapse whitespace.
-   */
+ 
   _normalize(text) {
     return text.toLowerCase().replace(/\s+/g, " ").trim();
   }
 
-  /**
-   * Count how many keywords from a list appear in the text.
-   * Returns { matches: string[], count: number }
-   */
+ 
   _matchKeywords(text, keywords) {
     const normalized = this._normalize(text);
     const matches = keywords.filter((kw) => normalized.includes(kw.toLowerCase()));
     return { matches, count: matches.length };
   }
 
-  /**
-   * Classify the ticket into a category.
-   * Returns { category, matchedKeywords, score }
-   */
+
   classifyCategory(text) {
     let bestCategory = "Other";
     let bestScore = 0;

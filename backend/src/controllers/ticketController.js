@@ -4,10 +4,7 @@ const { validationResult } = require("express-validator");
 const ticketService = require("../services/ticketService");
 
 class TicketController {
-  /**
-   * POST /tickets/analyze
-   * Body: { message: string }
-   */
+
   async analyze(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -26,10 +23,7 @@ class TicketController {
     }
   }
 
-  /**
-   * GET /tickets
-   * Query: ?limit=50&skip=0
-   */
+
   async list(req, res) {
     try {
       const limit = Math.min(parseInt(req.query.limit) || 50, 200);
@@ -42,9 +36,7 @@ class TicketController {
     }
   }
 
-  /**
-   * GET /tickets/:id
-   */
+ 
   async getOne(req, res) {
     try {
       const ticket = await ticketService.getTicketById(req.params.id);

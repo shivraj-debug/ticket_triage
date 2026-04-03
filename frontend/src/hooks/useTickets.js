@@ -1,10 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { fetchTickets } from "../utils/api";
 
-/**
- * useTickets
- * Manages fetching, caching, and prepending new tickets.
- */
+
 export function useTickets(limit = 50) {
   const [tickets, setTickets] = useState([]);
   const [total, setTotal] = useState(0);

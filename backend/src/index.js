@@ -37,20 +37,19 @@ app.use((err, _req, res, _next) => {
   res.status(500).json({ success: false, error: "Unexpected error" });
 });
 
-// ── DB + Start ───────────────────────────────────────────────
 async function start() {
   try {
     await mongoose.connect(MONGO_URI, {
       serverSelectionTimeoutMS: 5000
     });
-    console.log("✅ MongoDB connected:", MONGO_URI);
-    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+    console.log(" MongoDB connected:", MONGO_URI);
+    app.listen(PORT, () => console.log(` Server running on port ${PORT}`));
   } catch (err) {
-    console.error("❌ Failed to connect to MongoDB:", err.message);
+    console.error(" Failed to connect to MongoDB:", err.message);
     process.exit(1);
   }
 }
 
 start();
 
-module.exports = app; // for tests
+module.exports = app;

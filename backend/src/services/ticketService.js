@@ -37,8 +37,8 @@ class TicketService {
   }
 
   /**
-   * Get a single ticket by ID.
-   */
+    Get a single ticket by ID.
+   **/
   async getTicketById(id) {
     return Ticket.findById(id).lean({ virtuals: true });
   }

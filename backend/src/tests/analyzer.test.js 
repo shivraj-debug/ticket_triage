@@ -3,7 +3,7 @@
 const analyzer = require("../services/analyzer");
 
 describe("TicketAnalyzer", () => {
-  // ── Category Classification ─────────────────────────────────
+  // Category Classification 
 
   describe("classifyCategory()", () => {
     test("detects Billing category", () => {
@@ -32,7 +32,7 @@ describe("TicketAnalyzer", () => {
     });
   });
 
-  // ── Priority Computation ────────────────────────────────────
+  // Priority Computation 
 
   describe("computePriority()", () => {
     test("P0 for critical urgency + outage with technical signals", () => {
@@ -53,7 +53,7 @@ describe("TicketAnalyzer", () => {
     });
   });
 
-  // ── Urgency Detection ───────────────────────────────────────
+  // Urgency Detection 
 
   describe("detectUrgency()", () => {
     test("detects critical urgency from 'urgent' and 'asap'", () => {
@@ -67,7 +67,7 @@ describe("TicketAnalyzer", () => {
     });
   });
 
-  // ── Confidence Score ────────────────────────────────────────
+  // Confidence Score
 
   describe("confidence score", () => {
     test("returns a number between 0 and 1", () => {
@@ -83,8 +83,7 @@ describe("TicketAnalyzer", () => {
     });
   });
 
-  // ── Custom Rules ────────────────────────────────────────────
-
+  //  Custom Rules 
   describe("Custom Rule: Security Escalation", () => {
     test("forces P0 priority and SECURITY_ESCALATION tag on security keywords", () => {
       const result = analyzer.analyze("I think my account was hacked and there was unauthorized access");
@@ -110,7 +109,7 @@ describe("TicketAnalyzer", () => {
     });
   });
 
-  // ── Keyword Extraction ──────────────────────────────────────
+  // Keyword Extraction 
 
   describe("extractTopKeywords()", () => {
     test("extracts relevant keywords", () => {
@@ -126,7 +125,7 @@ describe("TicketAnalyzer", () => {
     });
   });
 
-  // ── Input Validation ────────────────────────────────────────
+  // Input Validation 
 
   describe("input validation", () => {
     test("throws on empty input", () => {

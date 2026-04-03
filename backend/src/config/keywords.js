@@ -1,7 +1,4 @@
-/**
- * Config-driven keyword rules for ticket classification and prioritization.
- * All NLP logic is driven by these definitions — no hardcoded strings in services.
- */
+
 
 const CATEGORIES = {
   Billing: {
@@ -72,7 +69,7 @@ const URGENCY_SIGNALS = {
   }
 };
 
-// Custom rule: Security-related tickets are always escalated to P0
+
 const SECURITY_SIGNALS = {
   keywords: [
     "security", "breach", "hacked", "hack", "vulnerability", "exploit",
@@ -85,7 +82,7 @@ const SECURITY_SIGNALS = {
   tag: "SECURITY_ESCALATION"
 };
 
-// Custom rule: Refund requests get special billing fast-track
+
 const REFUND_SIGNALS = {
   keywords: ["refund", "money back", "chargeback", "dispute", "charged twice", "double charged"],
   forceCategory: "Billing",

@@ -41,19 +41,19 @@ const ticketSchema = new mongoose.Schema(
     }
   },
   {
-    timestamps: true, // adds createdAt, updatedAt
+    timestamps: true, 
     toJSON: { virtuals: true },
     toObject: { virtuals: true }
   }
 );
 
-// Virtual: human-readable priority label
+
 ticketSchema.virtual("priorityLabel").get(function () {
   const labels = { P0: "Critical", P1: "High", P2: "Medium", P3: "Low" };
   return labels[this.priority] || this.priority;
 });
 
-// Index for fast listing by creation time
+
 ticketSchema.index({ createdAt: -1 });
 
 module.exports = mongoose.model("Ticket", ticketSchema);
