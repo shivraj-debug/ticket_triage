@@ -1,6 +1,6 @@
 # TriageAI — AI-Powered Support Ticket Triage
 
-A full-stack support ticket analyzer using local NLP/heuristics — no external AI APIs.
+A full-stack support ticket analyzer using local NLP — no external AI APIs.
 
 **Stack:** Express.js · MongoDB · React · Docker
 
@@ -9,15 +9,13 @@ A full-stack support ticket analyzer using local NLP/heuristics — no external 
 ## Quick Start
 
 ```bash
-# Clone / unzip the project, then:
+# Clone and unzip the project, then:
 docker-compose up --build
 
 # App: http://localhost:3000
 # API: http://localhost:4000
+
 ```
-
-> Requires Docker & Docker Compose installed.
-
 ---
 
 ## Manual Setup (without Docker)
@@ -28,13 +26,13 @@ docker-compose up --build
 cd backend
 npm install
 
-# Set env vars (edit .env):
+# Set env file
 # MONGO_URI=mongodb://localhost:27017/tickettriage
 # PORT=5000
 
-npm start          # production
-npm run dev        # development (nodemon)
-npm test           # run tests with coverage
+npm start         
+npm run dev        
+npm test         
 ```
 
 ### Frontend
@@ -43,11 +41,7 @@ npm test           # run tests with coverage
 cd frontend
 npm install
 
-# For local dev against the backend:
-# Edit src/utils/api.js or set REACT_APP_API_URL=http://localhost:4000/tickets
-
-npm start          # http://localhost:3000
-npm run build      # production build
+npm run dev
 ```
 
 ---
@@ -106,19 +100,19 @@ ticket-triage/
 ├── backend/
 │   └── src/
 │       ├── config/
-│       │   └── keywords.js      ← All NLP rules (config-driven)
+│       │   └── keywords.js      ### All NLP rules
 │       ├── services/
-│       │   ├── analyzer.js      ← Core NLP/heuristic engine
-│       │   └── ticketService.js ← DB operations
+│       │   ├── analyzer.js      ### Core NLP
+│       │   └── ticketService.js ### DB operations
 │       ├── models/
-│       │   └── ticket.js        ← Mongoose schema
+│       │   └── ticket.js        ### Mongoose schema
 │       ├── controllers/
 │       │   └── ticketController.js
 │       ├── middleware/
 │       │   └── routes.js
 │       ├── tests/
-│       │   └── analyzer.test.js ← 20 unit tests, 100% coverage
-│       └── index.js             ← Express + MongoDB bootstrap
+│       │   └── analyzer.test.js 
+│       └── index.js          
 ├── frontend/
 │   └── src/
 │       ├── components/
@@ -160,10 +154,6 @@ The analyzer pipeline has 5 stages:
 
 5. **Confidence Scoring** — confidence is a normalized function of total keyword match density vs ticket length (clamped 0.1–0.99).
 
-### Why keyword-based?
-
-Given the constraint of no external APIs, keyword matching is transparent, deterministic, and testable — every classification decision is traceable to a rule. It's trivially extensible: adding a new category or urgency signal is a one-line config change in `keywords.js`.
-
 ---
 
 ## Custom Rules
@@ -197,20 +187,20 @@ Given the constraint of no external APIs, keyword matching is transparent, deter
 
 ```js
 {
-  message:      String,   // original ticket text
-  category:     String,   // Billing | Technical | Account | Feature Request | Other
-  priority:     String,   // P0 | P1 | P2 | P3
-  urgencyLevel: String,   // critical | high | medium | low
-  confidence:   Number,   // 0.0–1.0
-  keywords:     [String], // top matched signals (max 8)
-  customTags:   [String], // e.g. SECURITY_ESCALATION, REFUND_REQUEST
+  message:      String,   
+  category:     String,   
+  priority:     String,   
+  urgencyLevel: String,   
+  confidence:   Number,   
+  keywords:     [String], 
+  customTags:   [String], 
   signals: {
     categoryScore:    Number,
     priorityBoost:    Number,
     urgencyMatches:   [String],
     categoryMatches:  [String]
   },
-  createdAt:    Date,     // auto via Mongoose timestamps
+  createdAt:    Date,   
   updatedAt:    Date
 }
 ```
@@ -219,57 +209,8 @@ Given the constraint of no external APIs, keyword matching is transparent, deter
 
 ---
 
-## Test Results
-
-```
-PASS src/tests/analyzer.test.js
-  TicketAnalyzer
-    classifyCategory()
-      ✓ detects Billing category
-      ✓ detects Technical category
-      ✓ detects Account category
-      ✓ detects Feature Request category
-      ✓ falls back to Other when no keywords match
-    computePriority()
-      ✓ P0 for critical urgency + outage with technical signals
-      ✓ P1 for high-signal technical issue
-      ✓ P3 for low-signal feature request
-    detectUrgency()
-      ✓ detects critical urgency from 'urgent' and 'asap'
-      ✓ returns low urgency for benign messages
-    confidence score
-      ✓ returns a number between 0 and 1
-      ✓ returns higher confidence for keyword-dense messages
-    Custom Rule: Security Escalation
-      ✓ forces P0 priority and SECURITY_ESCALATION tag on security keywords
-      ✓ forces category to Technical on security breach
-    Custom Rule: Refund Fast-Track
-      ✓ tags refund requests with REFUND_REQUEST
-      ✓ forces category to Billing for refund requests
-    extractTopKeywords()
-      ✓ extracts relevant keywords
-      ✓ returns at most 8 keywords
-    input validation
-      ✓ throws on empty input
-      ✓ throws on non-string input
-
-Tests: 20 passed, 20 total
-Coverage: 100% Statements | 100% Branch | 100% Functions | 100% Lines
-```
-
----
-
 ## Reflection
 
-### Design Decisions
-
-**Config-driven NLP** — All keyword lists live in `keywords.js`, not scattered across service code. Adding a new category requires zero code changes in the analyzer; just add a key to `CATEGORIES`. This makes the system auditable and easy to tune.
-
-**Pure analyzer functions** — `analyzer.js` has zero side effects and no DB dependency. It's a pure data-in / data-out module. This is why 100% test coverage is achievable without mocking — there's nothing to mock.
-
-**Separation: analyzer vs service vs controller** — The analyzer doesn't know about MongoDB; the service doesn't know about HTTP; the controller doesn't know about NLP. Each layer has one job, making each independently testable and replaceable.
-
-**MongoDB document model** — A ticket and its analysis are a single read unit — they're always fetched together. A relational model (separate `analyses` table) would add joins without benefit here. The `signals` subdocument preserves the full reasoning trail for debugging.
 
 ### Trade-offs
 
