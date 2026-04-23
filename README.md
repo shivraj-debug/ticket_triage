@@ -156,33 +156,6 @@ The analyzer pipeline has 5 stages:
 
 ---
 
-## Custom Rules
-
-### 1. Security Escalation (`SECURITY_ESCALATION`)
-
-**Keywords:** `security`, `breach`, `hacked`, `vulnerability`, `unauthorized access`, `data leak`, `phishing`, `malware`, etc.
-
-**Behavior:**
-- Forces priority to **P0** regardless of other scores
-- Forces category to **Technical**
-- Forces urgency to **critical**
-- Tags the ticket with `SECURITY_ESCALATION`
-
-**Rationale:** Security incidents have outsized business impact (legal liability, regulatory exposure, customer trust). They must always reach the security team immediately, regardless of how the ticket is otherwise worded. A user who writes "I think someone got into my account" shouldn't get P3 just because they wrote calmly.
-
-### 2. Refund Fast-Track (`REFUND_REQUEST`)
-
-**Keywords:** `refund`, `money back`, `chargeback`, `dispute`, `charged twice`, `double charged`
-
-**Behavior:**
-- Forces category to **Billing**
-- Applies a +1 priority boost
-- Tags the ticket with `REFUND_REQUEST`
-
-**Rationale:** Refund requests have direct revenue and churn implications. A customer requesting a refund is at high churn risk — fast resolution is critical for retention. Tagging them separately also enables future routing to a dedicated refunds queue.
-
----
-
 ## Data Model
 
 ```js
